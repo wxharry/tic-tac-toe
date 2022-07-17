@@ -1,5 +1,4 @@
 import React, { useEffect , useState } from 'react';
-import logo from './logo.svg';
 import './TicTacToe.css';
 
 const Square = ({value, onClick, idx}:any) => {
@@ -7,7 +6,7 @@ const Square = ({value, onClick, idx}:any) => {
     <button className="square"
             onClick={onClick}
             >
-      {value == null ? '' : (value % 2 == 1 ? 'O' : 'X')}
+      {value === null ? '' : (value % 2 === 1 ? 'O' : 'X')}
     </button>
   );
 }
@@ -34,15 +33,15 @@ const Board = () => {
   let status = "";
   let winner = calculateWinner(state);
   if (winner !== null) {
-    status = `Winner: ${winner % 2 == 1 ? 'O' : 'X'}`;
+    status = `Winner: ${winner % 2 === 1 ? 'O' : 'X'}`;
   } else if (value === 9){
     status = `Tie: Nobody wins`;
   } else {
-    status = `Next player: ${value % 2 == 1 ? 'O' : 'X'}`;
+    status = `Next player: ${value % 2 === 1 ? 'O' : 'X'}`;
   }
 
   return (
-    <div>
+    <div onClick={ (winner !== null || value === 9) ? handleReset : () => {} }>
       <div className="status">{status}</div>
       <div className="board-row">
         <Square value={state[0]} onClick={()=>handleClick(0)}></Square>
@@ -59,7 +58,6 @@ const Board = () => {
         <Square value={state[7]} onClick={()=>handleClick(7)}></Square>
         <Square value={state[8]} onClick={()=>handleClick(8)}></Square>
       </div>
-
     </div>
   )
 }
