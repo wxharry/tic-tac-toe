@@ -1,4 +1,5 @@
 import React, { useEffect , useState } from 'react';
+import calculateNextStep from './scripts/minimax'
 import './TicTacToe.css';
 
 const Square = ({value, onClick, idx}:any) => {
@@ -14,7 +15,7 @@ const Board = () => {
   const [state, setState] = useState(Array(9).fill(null));
   const [value, setValue] = useState(0);
 
-  const handleClick = (i:number) => {
+  const makeOneMove = (i:number) => {
     if (calculateWinner(state) !== null || state[i] !== null) {
       return;
     }
@@ -23,6 +24,21 @@ const Board = () => {
     setValue(value + 1);
     setState(_state);
   }
+
+  const handleClick = (i:number) => {
+    makeOneMove(i)
+  }
+
+  useEffect(()=>{
+    if(value % 2 === 1) {
+      const interval = setInterval(() => {
+        const nextMove = calculateNextStep(state);
+        // console.log("next move", nextMove);
+        makeOneMove(nextMove);
+      }, 800);
+      return () => clearInterval(interval);
+    }
+  }, [state, value])
 
   const handleReset = () => {
     setState(Array(9).fill(null));
@@ -63,9 +79,6 @@ const Board = () => {
 }
 
 const TicTacToe = () => {
-  useEffect(() => {
-
-  })
   return (
     <div className="game">
       <Board></Board>
